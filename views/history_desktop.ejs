@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/main.css'/>
+    <link rel='stylesheet' href='/stylesheets/history.css'/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+</head>
+<body>
+<div id="sidebar">
+    <div id="controlPenal">
+        <div id="urlCrawlerLogo"></div>
+        <a href="/home">
+            <div id="home">
+                <i class="icon-home"></i>
+            </div>
+        </a>
+        <a href="#">
+            <div id="howTo">
+                <i class="icon-question-sign"></i>
+            </div>
+        </a>
+    </div>
+    <div id="history">
+        <ul>
+            <% for (var i = 0; i < history.length ; i++ ) { %>
+            <li class="urlLink" data-tag=<%=i%> >
+                <a href="/history/<%= history[i].value.hash %>" >
+                    <%= history[i].value.date %>
+                </a>
+            <li>
+            <% }%>
+        </ul>
+    </div>
+</div>
+<div id="content" class="content">
+    <div id="historyZone">
+        <ul>
+            <% var firstEntry = history[0].value.URLs; %>
+            <% for (var i = 0; i < firstEntry.length ; i++ ) { %>
+            <li class="urlLink" data-tag=<%=i%> >
+                <% var encodedURL = encodeURIComponent(firstEntry[i])  %>
+                <a href="/url/<%= encodedURL %>" data-tag="<%= firstEntry[i] %>" >
+                    <%= firstEntry[i] %>
+                </a>
+            <li>
+                <% }%>
+        </ul>
+    </div>
+</div>
+</body>
+<script data-main="/javascripts/history.js" src="//cdnjs.cloudflare.com/ajax/libs/require-jquery/0.25.0/require-jquery.min.js"></script>
+</html>

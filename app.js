@@ -6,6 +6,7 @@
 var express = require('express')
   , routes = require('./routes')
   , urlCrawler = require('./routes/urlcrawler')
+  , history = require('./routes/history')
   , api = require('./routes/api.js')()
   , http = require('http')
   , path = require('path');
@@ -29,9 +30,12 @@ app.configure('development', function(){
 });
 
 // routing methods
-app.get('/', routes.index);
+app.get('/', urlCrawler.show);
+app.get('/home',urlCrawler.show);
 app.get('/url', urlCrawler.show);
 app.get('/url/:url', urlCrawler.ParseThenShow);
+app.get('/history',history.show);
+
 app.get('/test', urlCrawler.test);
 
 http.createServer(app).listen(app.get('port'), function(){

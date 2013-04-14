@@ -1,0 +1,22 @@
+.imageName {
+    display: block;
+    text-align: center;
+    background-color: #F2F2F2;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+    border-radius: 7px;
+}
+
+#historyZone{
+    background: #EEE;
+    box-shadow: 0 0 20px #ccc;
+    -webkit-box-shadow: 0 0 20px #ccc;
+    -moz-box-shadow: 0 0 20px #ccc;
+    overflow-y: auto;
+    padding: 0 30px 30px 30px;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 250;
+    bottom: 0;
+    border-right: 1px solid #BBB;
+}

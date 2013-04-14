@@ -81,7 +81,6 @@ exports.show = function(req, res){
         if (!result) {
             result = [];
         }
-        console.log('I am here - just show: ' + result);
         if(isMobile(ua)){
             res.render('urlCrawler_mobile', { title: 'URL Crawler', 'urls': result});
         }else{
@@ -124,7 +123,6 @@ exports.ParseThenShow = function(req, res){
                 }
             }else{
                 // it is not an HTML Page
-                console.log("I am here - newURL : " + newURL);
                 var result = [newURL];
                 if(isMobile(ua)){
                     res.render('urlCrawler_mobile', { title: 'URL Crawler', 'urls': result});
