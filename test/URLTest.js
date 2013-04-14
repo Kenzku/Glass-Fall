@@ -303,7 +303,7 @@ test('CouchDB - documents - readDocument and saveDocument',function(done){
 
     // error callback to aCouchDB.saveDocument and aCouchDB.readDocument
     function errorCB (err){
-        console.log(err);
+        console.log("Error: " + err);
         assert.ok;
         done();
     }
@@ -315,13 +315,15 @@ test('CouchDB - readView',function(done){
     aCouchDB.readView('byHash',null,successCB,errorCB);
 
     function successCB(body){
-        console.log(body.rows[0].value);
-        assert.ok(true);
+        for (var i = 0; i < body.rows.length; i++){
+            chai.expect(body.rows[i].value).to.include.keys('hash');
+            chai.expect(body.rows[i].value.hash).to.have.length.of('f9195c5c3c7edf17f1b52c7d8535dedb'.length);
+        }
         done();
     }
 
     function errorCB(err){
-        console.log(err);
+        console.log("Error: " + err);
         assert.ok(true);
         done();
     }
