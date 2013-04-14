@@ -12,7 +12,30 @@
     bottom: 0;
     border-right: 1px solid #BBB;
 }
-
+.content {
+    margin: 20px 0 0 330px;
+    position: relative;
+    max-width: 12000px;
+}
+.urlImage {
+    margin: 5px;
+    padding: 5px;
+    float: left;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    -webkit-box-shadow: 5px 5px 5px #ccc;
+    -moz-box-shadow: 5px 5px 5px #ccc;
+}
+.imageName {
+    display: block;
+    text-align: center;
+    background-color: #F2F2F2;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+    border-radius: 7px;
+}
+.image {
+    width: 330px;
+}
 .urlLink {
     border-radius: 7px;
     background-color: #3fab47;

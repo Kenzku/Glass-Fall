@@ -22,13 +22,19 @@ define(['../javascripts/imageDealer.js'],
                 test('self.putImageOnShelf - put image in <div id="imageZone"></div>',function(){
                     var aImageDealer = new ImageDealer();
                     var URLs = aImageDealer.fetchImageURLFromPage();
-                    aImageDealer.putImageOnShelf(URLs,successCS,errorCB);
+                    var images = aImageDealer.putImageOnShelf(URLs,successCS,errorCB);
 
+                    // inserted img tag
+                    equal(images.length,$('#qunit-fixture #content #imageZone').children().length);
+
+                    // the callback function should act the same
                     function successCS(imageZone){
                         equal(imageZone.length,$('#qunit-fixture #content #imageZone').children().length);
                     }
+
                     function errorCB(err){
                         console.log(err);
+                        ok(false);
                     }
                 });
             }
