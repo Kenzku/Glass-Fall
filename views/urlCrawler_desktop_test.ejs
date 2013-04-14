@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <!-- because of the position fixed in css, the Qunit test cannot perform properly -->
+    <!--<link rel='stylesheet' href='/stylesheets/desktop.css'/>-->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css" />
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture">
+    <div id="sidebar">
+        <div id="controlPenal">
+            <div id="urlCrawlerLogo"></div>
+            <a href="/history">
+                <div id="history">
+                    <i class="icon-h-sign"></i>
+                </div>
+            </a>
+            <a href="/howto">
+                <div id="howTo">
+                    <i class="icon-question-sign"></i>
+                </div>
+            </a>
+        </div>
+        <div id="urls">
+            <ul>
+                <% for (var i = 0; i < urls.length ; i++ ) { %>
+                <li class="urlLink" data-tag=<%=i%> >
+                    <a href="#" data-tag="<%= urls[i] %>" >
+                        <%
+                        var splitURL = urls[i].split("/");
+                        var length = splitURL.length;
+                        if (splitURL[length-1].length == 0) {
+                        %>
+                        <%=  splitURL[length-2] %>
+                        <%
+                        }else {
+                        %>
+                        <%=  splitURL[length-1] %>
+                        <%
+                        }
+                        %>
+                    </a>
+                <li>
+                    <% }%>
+            </ul>
+        </div>
+    </div>
+    <div id="content" class="content">
+        <div id="imageZone">
+        </div>
+    </div>
+</div>
+
+</body>
+<script data-main="/javascripts/main.js" src="//cdnjs.cloudflare.com/ajax/libs/require-jquery/0.25.0/require-jquery.min.js"></script>
+<script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+<script src="/test/testConfig.js"></script>
+</html>

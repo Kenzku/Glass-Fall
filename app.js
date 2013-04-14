@@ -31,10 +31,7 @@ app.configure('development', function(){
 // routing methods
 app.get('/', routes.index);
 app.get('/url', urlCrawler.show);
-app.get('/url/:url', urlCrawler.parseThenShow);
-app.get('/test', function(req,res){
-    res.sendfile(__dirname + '/public/test/urlClawsTest.html');
-});
+app.get('/test', urlCrawler.test);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

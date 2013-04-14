@@ -71,6 +71,28 @@ exports.show = function(req, res){
     }
 };
 
-exports.parseThenShow = function (req,res){
-    console.log("dfdsfsdf");
+exports.test = function(req,res) {
+    var ua = req.headers['user-agent'].toLowerCase();
+
+    // get HTML content from the default web page
+    _getHTMLContentFromURL (null,successCB, errorCB);
+
+    function successCB (req_1,res_1){
+        // if the page has moved
+        if (req_1.statusCode == 301){
+            _getHTMLContentFromURL (req_1.headers.location,successCB, errorCB);
+        }
+        // keep it simple, assume the default page is always a text/html
+        var result = aURLCrawler.getURLsFromContent(res_1,null);
+
+        if(isMobile(ua)){
+            res.render('urlCrawler_mobile_test', { title: 'URL Crawler', 'urls': result});
+        }else{
+            res.render('urlCrawler_desktop_test', { title: 'URL Crawler', 'urls': result});
+        }
+    }
+    function errorCB (req,res){
+        console.log(res);
+    }
+
 }
