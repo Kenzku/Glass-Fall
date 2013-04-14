@@ -197,7 +197,7 @@ test('getURLFromContent - read from an HTML file on localhost',function (done){
 });
 
 //mocha ./test/URLTest.js -R spec -u qunit -t 10000 -g getHTMLContentFromURL
-test('getURLFromContent - from getHTMLContentFromURL',function (done){
+test('getURLFromContent:1 - from getHTMLContentFromURL - default',function (done){
     // design a callback function so that mocha knows where to stop
     function successCB (req,res) {
         assert.equal(req.statusCode,200);
@@ -211,6 +211,34 @@ test('getURLFromContent - from getHTMLContentFromURL',function (done){
     // URL Crawler configuration
     var options = {
         url : 'http://www.telenor.com',
+        deep : Constant.Middleware.default.Depth,
+        state : Constant.State.run
+    }
+    // configuration
+    aURLCrawler.configureURLClaws(options);
+    // with configure url
+    aURLCrawler.getHTMLContentFromURL(null,successCB);
+});
+
+test('getURLFromContent:2 - from getHTMLContentFromURL - customise - re-location',function (done){
+    // design a callback function so that mocha knows where to stop
+    function successCB (req,res){
+        if (req.statusCode == 301 || req.statusCode == 302){
+            aURLCrawler.getHTMLContentFromURL(req.headers.location,successCB);
+        }else{
+            var result = aURLCrawler.getURLsFromContent(res,null);
+            chai.expect(result).to.be.a('array');
+            assert.deepEqual(result,Constant.TestArray_2);
+            done();
+        }
+    }
+
+    // create a URLCrawler object
+    var aURLCrawler = new URLCrawler();
+
+    // URL Crawler configuration
+    var options = {
+        url : 'http://opengraphprotocol.org/schema/',
         deep : Constant.Middleware.default.Depth,
         state : Constant.State.run
     }
@@ -236,6 +264,9 @@ test('SaveData - save to file', function(done){
     function successCB_1 () {
         fs.exists(dir,function(isExist){
             assert.equal(isExist,true);
+            // Test appending
+            aSaveData.dataToSave = 'Append NEW';
+            aSaveData.saveURLsToFile(true,null,successCB_2,errorCB);
         });
     }
     function successCB_2 () {
@@ -246,8 +277,9 @@ test('SaveData - save to file', function(done){
             done();
         });
     }
-    function errorCB () {
-        assert.ok;
+    function errorCB (err) {
+        assert.ok(false);
+        console.log(err);
         done();
     }
 
@@ -257,10 +289,6 @@ test('SaveData - save to file', function(done){
     assert.equal(aSaveData.dataToSave,'This is a test');
     /* null is to set, otherwise CB would not be call :( */
     aSaveData.saveURLsToFile(null,null,successCB_1,errorCB);
-
-    // Test appending
-    aSaveData.dataToSave = 'Append NEW';
-    aSaveData.saveURLsToFile(true,null,successCB_2,errorCB);
 });
 
 //mocha ./test/URLTest.js -R spec -u qunit -t 10000 -g CouchDB
@@ -327,4 +355,26 @@ test('CouchDB - readView',function(done){
         assert.ok(true);
         done();
     }
+});
+
+suite('Array Analysis');
+//mocha ./test/URLTest.js -R spec -u qunit -t 10000 -g 'Array analysis'
+test('Array analysis',function(){
+    for (var i = 0; i < Constant.TestArray_2.length ; i++ ) {
+        var encodedURL = encodeURIComponent(Constant.TestArray_2[i]);
+        var eachUrl = Constant.TestArray_2[i];
+
+        chai.expect(eachUrl).to.match(/http[s]?:\/\/([a-z|0-9]+[\\.])+[a-z|0-9]{2,9}([/|a-z|0-9-*.*?_=%&])*/gim);
+
+        var splitURL = Constant.TestArray_2[i].split("/");
+        var length = splitURL.length;
+
+        if (splitURL[length-1].length == 0) {
+            chai.expect(splitURL[length-2]).to.be.an('string');
+            chai.expect(splitURL[length-2]).to.have.length.of.at.least(1);
+        }else {
+            chai.expect(splitURL[length-1]).to.be.an('string');
+            chai.expect(splitURL[length-1]).to.have.length.of.at.least(1);
+        }
+     }
 });

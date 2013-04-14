@@ -24,7 +24,8 @@
             <ul>
                 <% for (var i = 0; i < urls.length ; i++ ) { %>
                     <li class="urlLink" data-tag=<%=i%> >
-                        <a href="#" data-tag="<%= urls[i] %>" >
+                        <% var encodedURL = encodeURIComponent(urls[i])  %>
+                        <a href="/url/<%= encodedURL %>" data-tag="<%= urls[i] %>" >
                             <%
                             var splitURL = urls[i].split("/");
                             var length = splitURL.length;

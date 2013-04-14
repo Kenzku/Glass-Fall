@@ -31,6 +31,7 @@ app.configure('development', function(){
 // routing methods
 app.get('/', routes.index);
 app.get('/url', urlCrawler.show);
+app.get('/url/:url', urlCrawler.ParseThenShow);
 app.get('/test', urlCrawler.test);
 
 http.createServer(app).listen(app.get('port'), function(){

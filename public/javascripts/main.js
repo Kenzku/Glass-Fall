@@ -7,9 +7,9 @@ require(["jquery","imageDealer"],
     function($,ImageDealer) {
     var aImageDealer = new ImageDealer();
     var URLs = aImageDealer.fetchImageURLFromPage();
-    var images = aImageDealer.putImageOnShelf(URLs,successCS,errorCB);
+    var images = aImageDealer.putImageOnShelf(URLs,successCB_1,errorCB);
 
-    function successCS(imageZone){
+    function successCB_1(imageZone){
     }
 
     function errorCB(err){

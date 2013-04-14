@@ -4,7 +4,9 @@
  * Time: 00:18
  */
 var URLCrawler = require('../lib/URLCrawler')
-  , Constant = require('../lib/Constant');
+  , Constant = require('../lib/Constant')
+  , CouchDB = require('../lib/CouchDB')
+  ;
 
 /**
  * a function return true,
@@ -36,6 +38,7 @@ var aURLCrawler = function(){
 /**
  * a helper function that
  * get HTML content from the default web page
+ * @param url the url you want to get Content from
  * @param successCB(request, response)
  * @param errorCB(error)
  * @private
@@ -44,29 +47,94 @@ var _getHTMLContentFromURL = function (url,successCB, errorCB){
     aURLCrawler.getHTMLContentFromURL(url,successCB,errorCB);
 };
 
+var _saveDocument = function (doc,successCallback,errorCallback) {
+    var aCouchDB = new CouchDB();
+    aCouchDB.saveDocument(doc,successCB,errorCB);
+
+    // success callback to aCouchDB.saveDocument
+    function successCB (body){
+        if (successCallback && typeof successCallback === 'function'){
+            successCallback(body);
+        }
+    }
+
+    // error callback to aCouchDB.saveDocument and aCouchDB.readDocument
+    function errorCB (err){
+        if (errorCallback && typeof errorCallback === 'function'){
+            errorCallback(err);
+        }
+    }
+}
+
 exports.show = function(req, res){
     var ua = req.headers['user-agent'].toLowerCase();
-
     // get HTML content from the default web page
-    _getHTMLContentFromURL (null,successCB, errorCB);
+    _getHTMLContentFromURL (Constant.URL.default,successCB, errorCB);
 
     function successCB (req_1,res_1){
         // if the page has moved
-        if (req_1.statusCode == 301){
+        if (req_1.statusCode == 301 || req_1.statusCode == 302){
             _getHTMLContentFromURL (req_1.headers.location,successCB, errorCB);
         }
         // keep it simple, assume the default page is always a text/html
         var result = aURLCrawler.getURLsFromContent(res_1,null);
-
+        if (!result) {
+            result = [];
+        }
+        console.log('I am here - just show: ' + result);
         if(isMobile(ua)){
             res.render('urlCrawler_mobile', { title: 'URL Crawler', 'urls': result});
         }else{
-
-
             res.render('urlCrawler_desktop', { title: 'URL Crawler', 'urls': result});
         }
     }
     function errorCB (req,res){
+        console.log(res);
+    }
+};
+
+exports.ParseThenShow = function(req, res){
+    var newURL = req.params.url;
+    var ua = req.headers['user-agent'].toLowerCase();
+    // get HTML content from the new url
+    _getHTMLContentFromURL (newURL,successCB_1, errorCB_1);
+
+    function successCB_1 (req_1,res_1){
+        // if the page has moved
+        if (req_1.statusCode == 301 || req_1.statusCode == 302){
+            _getHTMLContentFromURL (req_1.headers.location, successCB_1, errorCB_1);
+        }else{
+            if (req_1.headers['content-type'].search("text/html") >= 0){
+                // it is an HTML page
+                var result = aURLCrawler.getURLsFromContent(res_1,null);
+                // save URLs
+                _saveDocument(result,successCB_2,errorCB_2);
+                // NEED TO IMPROVE
+                function successCB_2(body){
+                }
+                // NEED TO IMPROVE
+                function errorCB_2(err){
+                    console.log(err);
+                }
+                if(isMobile(ua)){
+                    res.render('urlCrawler_mobile', { title: 'URL Crawler', 'urls': result});
+                }else{
+                    console.log(result);
+                    res.render('urlCrawler_desktop', { title: 'URL Crawler', 'urls': result});
+                }
+            }else{
+                // it is not an HTML Page
+                console.log("I am here - newURL : " + newURL);
+                var result = [newURL];
+                if(isMobile(ua)){
+                    res.render('urlCrawler_mobile', { title: 'URL Crawler', 'urls': result});
+                }else{
+                    res.render('urlCrawler_desktop', { title: 'URL Crawler', 'urls': result});
+                }
+            }
+        }
+    }
+    function errorCB_1 (req,res){
         console.log(res);
     }
 };
@@ -79,7 +147,7 @@ exports.test = function(req,res) {
 
     function successCB (req_1,res_1){
         // if the page has moved
-        if (req_1.statusCode == 301){
+        if (req_1.statusCode == 301 || req_1.statusCode == 302){
             _getHTMLContentFromURL (req_1.headers.location,successCB, errorCB);
         }
         // keep it simple, assume the default page is always a text/html
@@ -94,5 +162,4 @@ exports.test = function(req,res) {
     function errorCB (req,res){
         console.log(res);
     }
-
 }
