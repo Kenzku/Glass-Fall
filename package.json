@@ -1,5 +1,5 @@
 {
-  "name": "URL Crawler",
+  "name": "Glass-Fall",
   "original contributor" : {
       "code name" : "Ken Huang",
       "email" : ""
@@ -12,8 +12,8 @@
   "dependencies": {
     "express": "3.1.0",
     "ejs": "*",
-    "chai" : "1.5.*",
-    "nano" : "3.3.*",
-    "mocha" : "1.9.*"
+    "chai" : "1.5.0",
+    "nano" : "3.3.8",
+    "mocha" : "1.9.0"
   }
 }
