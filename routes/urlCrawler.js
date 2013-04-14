@@ -48,20 +48,26 @@ var _getHTMLContentFromURL = function (url,successCB, errorCB){
 };
 
 var _saveDocument = function (doc,successCallback,errorCallback) {
-    var aCouchDB = new CouchDB();
-    aCouchDB.saveDocument(doc,successCB,errorCB);
-
-    // success callback to aCouchDB.saveDocument
-    function successCB (body){
+    if (!doc) {
         if (successCallback && typeof successCallback === 'function'){
-            successCallback(body);
+            successCallback(null);
         }
-    }
+    }else{
+        var aCouchDB = new CouchDB();
+        aCouchDB.saveDocument(doc,successCB,errorCB);
 
-    // error callback to aCouchDB.saveDocument and aCouchDB.readDocument
-    function errorCB (err){
-        if (errorCallback && typeof errorCallback === 'function'){
-            errorCallback(err);
+        // success callback to aCouchDB.saveDocument
+        function successCB (body){
+            if (successCallback && typeof successCallback === 'function'){
+                successCallback(body);
+            }
+        }
+
+        // error callback to aCouchDB.saveDocument and aCouchDB.readDocument
+        function errorCB (err){
+            if (errorCallback && typeof errorCallback === 'function'){
+                errorCallback(err);
+            }
         }
     }
 }

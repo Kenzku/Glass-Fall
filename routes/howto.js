@@ -1,14 +1,7 @@
 /**
  * Author: Ken
  * Date: 14/04/2013
- * Time: 21:39
- */
-var CouchDB = require('../lib/CouchDB');
-/**
- * a function return true,
- * if the user is from a mobile device
- * @param ua user agent from header field in lower case
- * @returns {*}
+ * Time: 22:37
  */
 var isMobile = function(ua) {
     // a regexp to identify mobile browsers based on user-agent string
@@ -19,36 +12,17 @@ var isMobile = function(ua) {
 exports.show = function(req, res){
     var ua = req.headers['user-agent'].toLowerCase();
 
-    var aCouchDB = new CouchDB();
-    aCouchDB.readView('byHash',null,successCB,errorCB);
-
-    function successCB(body){
-        var views = body.rows;
-
-        var howto = {
-            what : 'This is the history list',
-            whatElse : 'Left most is the dates and each date contains your URL searched history',
-            whatIsNotDone : 'The second colon is each url of a certain date',
-            last : ':p'
-        }
-
-        if (req.params.count){
-            if(isMobile(ua)){
-                res.render('history_mobile', { title: 'URL Crawler History', 'history': views});
-            }else{
-                res.render('history_desktop', { title: 'URL Crawler History', 'history': views,'howto' : howto,'count':req.params.count});
-            }
-        }else{
-            if(isMobile(ua)){
-                res.render('history_mobile', { title: 'URL Crawler History', 'history': views});
-            }else{
-                res.render('history_desktop', { title: 'URL Crawler History', 'history': views,'howto' : howto,'count':0});
-            }
-        }
+    var howto = {
+        what : 'This is a URL crawler that will fetch from a default URL as its begin point',
+        whatElse : 'The history of each page that you visited will be save automatically to my CouchDB',
+        whatIsNotDone : 'Apparently, it is a tryout of mine, so it has lots of shortcomings and please do not try to brake it',
+        nav : 'The navigation bar allows you go to home or history page',
+        last : 'By the way, I am a student from Aalto University, and friends call me Ken.'
     }
 
-    function errorCB(err){
-        console.log("Error: " + err);
+    if(isMobile(ua)){
+        res.render('howto', { title: 'URL Crawler How To', 'howto': howto});
+    }else{
+        res.render('howto', { title: 'URL Crawler How To', 'howto': howto});
     }
 }
-

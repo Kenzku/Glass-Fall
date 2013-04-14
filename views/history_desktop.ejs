@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/main.css'/>
     <link rel='stylesheet' href='/stylesheets/history.css'/>
+    <link rel='stylesheet' href='/stylesheets/howto.css'/>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
 </head>
 <body>
@@ -15,7 +16,7 @@
                 <i class="icon-home"></i>
             </div>
         </a>
-        <a href="#">
+        <a href="/howto">
             <div id="howTo">
                 <i class="icon-question-sign"></i>
             </div>
@@ -25,7 +26,7 @@
         <ul>
             <% for (var i = 0; i < history.length ; i++ ) { %>
             <li class="urlLink" data-tag=<%=i%> >
-                <a href="/history/<%= history[i].value.hash %>" >
+                <a href="/history/<%= i%>" >
                     <%= history[i].value.date %>
                 </a>
             <li>
@@ -36,7 +37,9 @@
 <div id="content" class="content">
     <div id="historyZone">
         <ul>
-            <% var firstEntry = history[0].value.URLs; %>
+            <% var current = count; %>
+            <% var firstEntry = history[current].value.URLs; %>
+            <% if (firstEntry) %>
             <% for (var i = 0; i < firstEntry.length ; i++ ) { %>
             <li class="urlLink" data-tag=<%=i%> >
                 <% var encodedURL = encodeURIComponent(firstEntry[i])  %>
@@ -47,7 +50,15 @@
                 <% }%>
         </ul>
     </div>
+    <div id="explain">
+        <div class="chat">
+            <p>HOW TO?</p>
+            <div class="bubble me"><%= howto.what %></div>
+            <div class="bubble me"><%= howto.whatElse %></div>
+            <div class="bubble me"><%= howto.whatIsNotDone %></div>
+            <div class="bubble me"><%= howto.last %></div>
+        </div>
+    </div>
 </div>
 </body>
-<script data-main="/javascripts/history.js" src="//cdnjs.cloudflare.com/ajax/libs/require-jquery/0.25.0/require-jquery.min.js"></script>
 </html>

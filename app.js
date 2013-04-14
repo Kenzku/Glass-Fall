@@ -4,8 +4,8 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
   , urlCrawler = require('./routes/urlcrawler')
+  , howto = require('./routes/howto')
   , history = require('./routes/history')
   , api = require('./routes/api.js')()
   , http = require('http')
@@ -35,6 +35,8 @@ app.get('/home',urlCrawler.show);
 app.get('/url', urlCrawler.show);
 app.get('/url/:url', urlCrawler.ParseThenShow);
 app.get('/history',history.show);
+app.get('/history/:count',history.show);
+app.get('/howto',howto.show);
 
 app.get('/test', urlCrawler.test);
 

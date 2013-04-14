@@ -20,3 +20,10 @@
     bottom: 0;
     border-right: 1px solid #BBB;
 }
+
+#explain {
+    position: relative;
+    float: right;
+    margin-right: 10px;
+    z-index: -100;
+}
