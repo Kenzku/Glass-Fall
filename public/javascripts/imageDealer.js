@@ -6,6 +6,10 @@
 define(['ejs'],function(ESJ){
    return ImageDealer;
 });
+/**
+ * fetch image URL and display
+ * @constructor
+ */
 function ImageDealer(){
     var self = this;
 
@@ -14,7 +18,13 @@ function ImageDealer(){
         names : [],
         length : 0
     };
-
+    /**
+     * return an Object that contains image [urls],[names],and number of images
+     * @param successCallback called when finishing fetching all URLs that is an image
+     * with parameter which is an Object that contains image [urls],[names],and number of images
+     * @param errorCallback NEED TO DO
+     * @returns {Object}
+     */
     self.fetchImageURLFromPage = function (successCallback, errorCallback) {
         var urls = $('.urlLink a');
 
@@ -46,7 +56,14 @@ function ImageDealer(){
 
         return self.image;
     }
-
+    /**
+     * This function will update tag #imageZone by updating the template '/templates/image.ejs',
+     * and appending to the tag.
+     * @param images {Object} an Object that contains image [urls],[names],and number of images
+     * @param successCallback called when put all images to '#imageZone' by appending
+     * @param errorCallback
+     * @returns {Array} an array of HTML elements of those images and names
+     */
     self.putImageOnShelf = function (images, successCallback, errorCallback) {
         images = images ? images : self.image;
         if (!images) {
