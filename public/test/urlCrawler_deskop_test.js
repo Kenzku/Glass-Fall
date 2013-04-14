@@ -25,11 +25,11 @@ define(['../javascripts/imageDealer.js'],
                     var images = aImageDealer.putImageOnShelf(URLs,successCS,errorCB);
 
                     // inserted img tag
-                    equal(images.length,$('#qunit-fixture #content #imageZone').children().length);
+                    equal(images.length,$('#qunit-fixture #content #imageZone').children().length/2);
 
                     // the callback function should act the same
                     function successCS(imageZone){
-                        equal(imageZone.length,$('#qunit-fixture #content #imageZone').children().length);
+                        equal(imageZone.length,$('#qunit-fixture #content #imageZone').children().length/2);
                     }
 
                     function errorCB(err){

@@ -65,6 +65,7 @@ function ImageDealer(){
             imageZone.push(image);
             $('#imageZone').append(image);
         }
+
         if (successCallback && typeof successCallback === 'function'){
             successCallback(imageZone);
         }
