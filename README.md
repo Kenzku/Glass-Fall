@@ -17,11 +17,16 @@ enabled it.
 
 To sreve the application you need a server running Node.js with NPM installed. Step to get the web server running:
 
-    cd WAMP-Tryout
+    cd Glass-Fall
     npm install
     node app.js
 
-**The application is still under development** and it does not work yet.
+**The application is still under development** but you can then try: 
+```localhost:3000/``` for the home page and ```localhost:3000/test``` for test
+
+To test server codes:
+    cd Glass-Fall
+    mocha ./test/URLTest.js -R sepc -u qunit -t 10000
 
 ## Implementation
 
